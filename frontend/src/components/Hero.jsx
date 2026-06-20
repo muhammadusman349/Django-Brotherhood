@@ -1,7 +1,39 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
-const Hero = () => {
+const Hero = ({ banners }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [heroImages, setHeroImages] = useState([]);
+
+  useEffect(() => {
+    if (banners && banners.length > 0) {
+      setHeroImages(banners.map(b => {
+        // Construct full URL if image path is relative
+        if (b.image && !b.image.startsWith('http')) {
+          return `http://localhost:8000${b.image}`;
+        }
+        return b.image;
+      }));
+    } else {
+      // Default hero images if no banners
+      setHeroImages([
+        'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&auto=format&fit=crop'
+      ]);
+    }
+  }, [banners]);
+
+  useEffect(() => {
+    if (heroImages.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [heroImages]);
   return (
     <section className="relative min-h-[700px] flex items-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Background Pattern */}
@@ -45,10 +77,6 @@ const Hero = () => {
                 <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               
-              <button className="group inline-flex items-center justify-center gap-3 bg-white text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg uppercase tracking-wide border-2 border-gray-200 hover:border-primary-600 hover:text-primary-600 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <Play size={24} className="fill-current" />
-                Watch Video
-              </button>
             </div>
 
             {/* Stats */}
@@ -74,13 +102,28 @@ const Hero = () => {
               {/* Main Image Container */}
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary-100 to-secondary-100 aspect-[4/3]">
                 <img
-                  src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop"
-                  alt="Athlete with sports equipment"
-                  className="w-full h-full object-cover"
+                  src={heroImages[currentIndex]}
+                  alt={banners?.[currentIndex]?.title || 'Athlete with sports equipment'}
+                  className="w-full h-full object-cover transition-opacity duration-500"
                 />
                 
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+
+                {/* Slideshow Indicators */}
+                {heroImages.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                    {heroImages.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`w-3 h-3 rounded-full transition-all ${
+                          index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Floating Card 1 */}
