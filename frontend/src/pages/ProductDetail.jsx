@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productsAPI } from '../services/api';
-import { ArrowLeft, Star, Heart, MessageCircle, Check } from 'lucide-react';
+import { ArrowLeft, Star, Heart, MessageCircle, Check, ZoomIn, ZoomOut, X } from 'lucide-react';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -12,6 +12,9 @@ const ProductDetail = () => {
   const [showWhatsApp, setShowWhatsApp] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   useEffect(() => {
     fetchProduct();
@@ -30,6 +33,31 @@ const ProductDetail = () => {
       setLoading(false);
     }
   };
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.5, 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.5, 1));
+  };
+
+  const handleImageClick = () => {
+    setIsZoomed(!isZoomed);
+    setZoomLevel(1);
+  };
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      handleZoomIn();
+    } else {
+      handleZoomOut();
+    }
+  };
+
+  const currentImages = product?.images || [];
+  const currentImage = currentImages[selectedImage] || currentImages[0];
 
   const handleWhatsAppOrder = () => {
     if (!phoneNumber) {
@@ -93,22 +121,89 @@ const ProductDetail = () => {
       {/* Product Details */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image */}
-          <div className="bg-white rounded-2xl shadow-card overflow-hidden">
-            {product.image ? (
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-96 flex items-center justify-center bg-gray-50">
-                <div className="text-center">
-                  <div className="bg-gray-200 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-4xl">📦</span>
+          {/* Product Images */}
+          <div className="space-y-4">
+            {/* Main Image */}
+            <div className="bg-white rounded-2xl shadow-card overflow-hidden relative">
+              {currentImage?.image_url ? (
+                <div className="relative">
+                  <img
+                    src={currentImage.image_url}
+                    alt={currentImage.alt_text || product.name}
+                    className="w-full h-96 object-cover cursor-pointer transition-transform duration-300"
+                    style={{ transform: isZoomed ? `scale(${zoomLevel})` : 'scale(1)' }}
+                    onClick={handleImageClick}
+                    onWheel={handleWheel}
+                  />
+                  
+                  {/* Zoom Controls */}
+                  <div className="absolute bottom-4 right-4 flex gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleZoomIn();
+                      }}
+                      className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <ZoomIn size={20} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleZoomOut();
+                      }}
+                      className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <ZoomOut size={20} />
+                    </button>
+                    {isZoomed && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsZoomed(false);
+                          setZoomLevel(1);
+                        }}
+                        className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
+                      >
+                        <X size={20} />
+                      </button>
+                    )}
                   </div>
-                  <p className="text-gray-500">No image available</p>
                 </div>
+              ) : (
+                <div className="w-full h-96 flex items-center justify-center bg-gray-50">
+                  <div className="text-center">
+                    <div className="bg-gray-200 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                      <span className="text-4xl">📦</span>
+                    </div>
+                    <p className="text-gray-500">No image available</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Thumbnail Gallery */}
+            {currentImages.length > 1 && (
+              <div className="grid grid-cols-4 gap-2">
+                {currentImages.map((img, index) => (
+                  <button
+                    key={img.id}
+                    onClick={() => {
+                      setSelectedImage(index);
+                      setIsZoomed(false);
+                      setZoomLevel(1);
+                    }}
+                    className={`rounded-lg overflow-hidden border-2 transition-all ${
+                      selectedImage === index ? 'border-primary-500' : 'border-transparent'
+                    }`}
+                  >
+                    <img
+                      src={img.image_url}
+                      alt={img.alt_text || product.name}
+                      className="w-full h-20 object-cover"
+                    />
+                  </button>
+                ))}
               </div>
             )}
           </div>

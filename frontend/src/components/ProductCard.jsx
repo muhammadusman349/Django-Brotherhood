@@ -9,10 +9,10 @@ const ProductCard = ({ product }) => {
     <div className="group bg-white rounded-2xl shadow-card overflow-hidden hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden bg-gray-50">
-        {product.image ? (
+        {product.primary_image?.image_url ? (
           <img
-            src={product.image}
-            alt={product.name}
+            src={product.primary_image.image_url}
+            alt={product.primary_image.alt_text || product.name}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
         ) : (
