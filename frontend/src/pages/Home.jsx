@@ -3,9 +3,11 @@ import { ArrowRight, Award, TrendingUp, Truck, Shield, Zap, Mail, Star } from 'l
 import { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
+import BannerSlideshow from '../components/BannerSlideshow';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [banners, setBanners] = useState([]);
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -18,13 +20,24 @@ const Home = () => {
       }
     };
 
+    const fetchBanners = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/banners/');
+        const data = await response.json();
+        setBanners(data);
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      }
+    };
+
     fetchFeaturedProducts();
+    fetchBanners();
   }, []);
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <Hero />
+      <Hero banners={banners} />
 
       {/* Featured Products Section */}
       <section className="py-20 bg-white">
