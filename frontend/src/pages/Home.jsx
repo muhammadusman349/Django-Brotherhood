@@ -43,7 +43,7 @@ const Home = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">
               <Star size={16} />
               <span>Top Picks</span>
             </div>
@@ -91,15 +91,15 @@ const Home = () => {
       </section>
 
       {/* Stats Banner */}
-      <section className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-20">
+      <section className="bg-gradient-to-r from-blue-900 to-gray-900 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div className="group">
-              <div className="text-5xl font-black text-primary-500 mb-2 group-hover:scale-110 transition-transform">50K+</div>
+              <div className="text-5xl font-black text-blue-400 mb-2 group-hover:scale-110 transition-transform">50K+</div>
               <div className="text-lg font-semibold text-gray-300">Happy Customers</div>
             </div>
             <div className="group">
-              <div className="text-5xl font-black text-secondary-500 mb-2 group-hover:scale-110 transition-transform">1000+</div>
+              <div className="text-5xl font-black text-red-400 mb-2 group-hover:scale-110 transition-transform">1000+</div>
               <div className="text-lg font-semibold text-gray-300">Products</div>
             </div>
             <div className="group">
@@ -107,7 +107,7 @@ const Home = () => {
               <div className="text-lg font-semibold text-gray-300">Brands</div>
             </div>
             <div className="group">
-              <div className="text-5xl font-black text-blue-400 mb-2 group-hover:scale-110 transition-transform">24/7</div>
+              <div className="text-5xl font-black text-blue-300 mb-2 group-hover:scale-110 transition-transform">24/7</div>
               <div className="text-lg font-semibold text-gray-300">Support</div>
             </div>
           </div>
@@ -118,7 +118,7 @@ const Home = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">
               <Zap size={16} />
               <span>Why Us</span>
             </div>
@@ -132,7 +132,7 @@ const Home = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 text-center border border-gray-100">
-              <div className="bg-gradient-to-br from-primary-500 to-primary-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+              <div className="bg-gradient-to-br from-blue-600 to-blue-700 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
                 <Award size={32} className="text-white" />
               </div>
               <h3 className="text-xl font-black mb-3 text-gray-900 uppercase">Premium Quality</h3>
@@ -140,9 +140,9 @@ const Home = () => {
                 Only the highest quality sports equipment from trusted manufacturers.
               </p>
             </div>
-            
+
             <div className="bg-white p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 text-center border border-gray-100">
-              <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
+              <div className="bg-gradient-to-br from-red-600 to-red-700 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
                 <TrendingUp size={32} className="text-white" />
               </div>
               <h3 className="text-xl font-black mb-3 text-gray-900 uppercase">Wide Selection</h3>
@@ -150,7 +150,7 @@ const Home = () => {
                 Browse through our extensive collection of sports gear across multiple categories.
               </p>
             </div>
-            
+
             <div className="bg-white p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 text-center border border-gray-100">
               <div className="bg-gradient-to-br from-green-500 to-green-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
                 <Truck size={32} className="text-white" />
@@ -160,7 +160,7 @@ const Home = () => {
                 Quick and reliable delivery to get you back in the game faster.
               </p>
             </div>
-            
+
             <div className="bg-white p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-2 text-center border border-gray-100">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg">
                 <Shield size={32} className="text-white" />
@@ -175,7 +175,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-primary-600 via-primary-700 to-secondary-600 py-20">
+      <section className="bg-gradient-to-r from-blue-700 via-blue-800 to-red-600 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-white tracking-tight">
             Ready to Dominate Your Game?

@@ -35,7 +35,7 @@ const Hero = ({ banners }) => {
     return () => clearInterval(interval);
   }, [heroImages]);
   return (
-    <section className="relative min-h-[700px] flex items-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <section className="relative min-h-[700px] flex items-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -52,14 +52,14 @@ const Hero = ({ banners }) => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8 animate-fadeInUp">
-            <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
               <Sparkles size={16} />
               <span>Premium Sports Equipment</span>
             </div>
-            
+
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
               Unleash Your
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-red-600">
                 Athletic Potential
               </span>
             </h1>
@@ -71,7 +71,7 @@ const Hero = ({ banners }) => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/products"
-                className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-8 py-4 rounded-2xl font-bold text-lg uppercase tracking-wide hover:from-primary-700 hover:to-secondary-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+                className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-blue-700 to-red-600 text-white px-8 py-4 rounded-2xl font-bold text-lg uppercase tracking-wide hover:from-blue-800 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
               >
                 Shop Now
                 <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
@@ -100,7 +100,7 @@ const Hero = ({ banners }) => {
           <div className="relative animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
             <div className="relative">
               {/* Main Image Container */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary-100 to-secondary-100 aspect-[4/3]">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-100 to-red-50 aspect-[4/3]">
                 <img
                   src={heroImages[currentIndex]}
                   alt={banners?.[currentIndex]?.title || 'Athlete with sports equipment'}
@@ -144,8 +144,8 @@ const Hero = ({ banners }) => {
               {/* Floating Card 2 */}
               <div className="absolute -right-8 bottom-8 bg-white rounded-2xl shadow-xl p-4 animate-float" style={{ animationDelay: '1.5s' }}>
                 <div className="flex items-center gap-3">
-                  <div className="bg-primary-100 p-2 rounded-xl">
-                    <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="bg-blue-100 p-2 rounded-xl">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
