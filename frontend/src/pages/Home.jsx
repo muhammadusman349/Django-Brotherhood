@@ -95,20 +95,28 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div className="group">
-              <div className="text-5xl font-black text-blue-400 mb-2 group-hover:scale-110 transition-transform">50K+</div>
-              <div className="text-lg font-semibold text-gray-300">Happy Customers</div>
+              <div className="flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <Award size={50} className="text-yellow-400" />
+              </div>
+              <div className="text-lg font-semibold text-gray-300">ISO Certified</div>
             </div>
             <div className="group">
-              <div className="text-5xl font-black text-red-400 mb-2 group-hover:scale-110 transition-transform">1000+</div>
-              <div className="text-lg font-semibold text-gray-300">Products</div>
+              <div className="flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <Shield size={50} className="text-green-400" />
+              </div>
+              <div className="text-lg font-semibold text-gray-300">SSL Secured</div>
             </div>
             <div className="group">
-              <div className="text-5xl font-black text-green-400 mb-2 group-hover:scale-110 transition-transform">50+</div>
-              <div className="text-lg font-semibold text-gray-300">Brands</div>
+              <div className="flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <Star size={50} className="text-blue-400" />
+              </div>
+              <div className="text-lg font-semibold text-gray-300">Verified Business</div>
             </div>
             <div className="group">
-              <div className="text-5xl font-black text-blue-300 mb-2 group-hover:scale-110 transition-transform">24/7</div>
-              <div className="text-lg font-semibold text-gray-300">Support</div>
+              <div className="flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                <Zap size={50} className="text-red-400" />
+              </div>
+              <div className="text-lg font-semibold text-gray-300">Quality Assured</div>
             </div>
           </div>
         </div>
@@ -181,7 +189,7 @@ const Home = () => {
             Ready to Dominate Your Game?
           </h2>
           <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
-            Join thousands of athletes who trust Brother Sports for their equipment needs. Start your journey to excellence today.
+            Join Brotherhood Sports and trust premium gear built for peak performance. Start your journey to excellence today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

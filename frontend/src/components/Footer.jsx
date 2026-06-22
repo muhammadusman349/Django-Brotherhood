@@ -18,7 +18,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-gray-400 mb-8 text-lg leading-relaxed">
-              Premium sports equipment for athletes and enthusiasts. Quality products, exceptional service, and unmatched performance.
+              Premium sports products designed for performance, quality, and champions worldwide.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">

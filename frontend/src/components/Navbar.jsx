@@ -23,19 +23,19 @@ const Navbar = () => {
           
           {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-1">
-            <Link to="/" className="px-5 py-2.5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Home</Link>
-            <Link to="/products" className="px-5 py-2.5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Products</Link>
-            <Link to="/categories" className="px-5 py-2.5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Categories</Link>
-            <Link to="/contact" className="px-5 py-2.5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Contact</Link>
+            <Link to="/" className="px-10 py-5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Home</Link>
+            <Link to="/products" className="px-10 py-5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Products</Link>
+            <Link to="/categories" className="px-10 py-5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Categories</Link>
+            <Link to="/contact" className="px-10 py-5 rounded-xl font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Contact</Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2.5 rounded-xl text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200"
+              className="inline-flex items-center justify-center p-4 rounded-xl text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
@@ -45,10 +45,10 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <div className="px-4 pt-4 pb-6 space-y-2">
-            <Link to="/" className="block px-4 py-3 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Home</Link>
-            <Link to="/products" className="block px-4 py-3 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Products</Link>
-            <Link to="/categories" className="block px-4 py-3 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Categories</Link>
-            <Link to="/contact" className="block px-4 py-3 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Contact</Link>
+            <Link to="/" className="block px-7 py-5 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Home</Link>
+            <Link to="/products" className="block px-7 py-5 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Products</Link>
+            <Link to="/categories" className="block px-7 py-5 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Categories</Link>
+            <Link to="/contact" className="block px-7 py-5 rounded-xl hover:bg-primary-50 font-semibold text-gray-700 hover:text-primary-600 transition-all" onClick={() => setIsOpen(false)}>Contact</Link>
           </div>
         </div>
       )}

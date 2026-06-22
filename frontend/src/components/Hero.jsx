@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Stats from './Stats';
 
 const Hero = ({ banners }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,14 +59,14 @@ const Hero = ({ banners }) => {
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
-              Unleash Your
+              Crafting Excellence 
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-red-600">
-                Athletic Potential
+                In Every Game
               </span>
             </h1>
-            
+
             <p className="text-xl text-gray-600 leading-relaxed max-w-xl">
-              Discover professional-grade sports equipment trusted by world-class athletes. Quality gear that helps you perform at your best.
+              High-performance footballs, goalkeeper gloves, and sportswear crafted to deliver durability, precision, and professional quality worldwide.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -80,20 +81,7 @@ const Hero = ({ banners }) => {
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 pt-8 border-t border-gray-200">
-              <div>
-                <div className="text-3xl font-black text-gray-900">50K+</div>
-                <div className="text-sm text-gray-500 font-semibold uppercase tracking-wider">Happy Athletes</div>
-              </div>
-              <div>
-                <div className="text-3xl font-black text-gray-900">1000+</div>
-                <div className="text-sm text-gray-500 font-semibold uppercase tracking-wider">Products</div>
-              </div>
-              <div>
-                <div className="text-3xl font-black text-gray-900">4.9★</div>
-                <div className="text-sm text-gray-500 font-semibold uppercase tracking-wider">Rating</div>
-              </div>
-            </div>
+            <Stats />
           </div>
 
           {/* Right Content - Hero Image */}
@@ -135,8 +123,8 @@ const Hero = ({ banners }) => {
                     </svg>
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">Free Shipping</div>
-                    <div className="text-sm text-gray-500">On orders $50+</div>
+                    <div className="font-bold text-gray-900">Sports Show</div>
+                    <div className="text-sm text-gray-500"></div>
                   </div>
                 </div>
               </div>
@@ -151,7 +139,7 @@ const Hero = ({ banners }) => {
                   </div>
                   <div>
                     <div className="font-bold text-gray-900">Quality Guaranteed</div>
-                    <div className="text-sm text-gray-500">30-day returns</div>
+                    <div className="text-sm text-gray-500"></div>
                   </div>
                 </div>
               </div>
