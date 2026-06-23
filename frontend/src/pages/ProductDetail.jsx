@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productsAPI } from '../services/api';
-import { ArrowLeft, Heart, MessageCircle, Check, ZoomIn, ZoomOut, X } from 'lucide-react';
+import { ArrowLeft, Heart, Check, Mail } from 'lucide-react';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -9,12 +9,10 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [showWhatsApp, setShowWhatsApp] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [message, setMessage] = useState('');
   const [selectedImage, setSelectedImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     fetchProduct();
@@ -56,21 +54,15 @@ const ProductDetail = () => {
     }
   };
 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setMousePosition({ x, y });
+  };
+
   const currentImages = product?.images || [];
   const currentImage = currentImages[selectedImage] || currentImages[0];
-
-  const handleWhatsAppOrder = () => {
-    if (!phoneNumber) {
-      alert('Please enter your phone number');
-      return;
-    }
-
-    const whatsappMessage = `Hello! I would like to order: ${product.name}\n\nPrice: $${product.price}\n\nPlease contact me at: ${phoneNumber}`;
-    const encodedMessage = encodeURIComponent(whatsappMessage);
-    const whatsappURL = `https://wa.me/?text=${encodedMessage}`;
-    
-    window.open(whatsappURL, '_blank');
-  };
 
   if (loading) {
     return (
@@ -126,49 +118,19 @@ const ProductDetail = () => {
             {/* Main Image */}
             <div className="bg-white rounded-2xl shadow-card overflow-hidden relative">
               {currentImage?.image_url ? (
-                <div className="relative">
+                <div className="relative overflow-hidden group">
                   <img
                     src={currentImage.image_url}
                     alt={currentImage.alt_text || product.name}
-                    className="w-full h-96 object-cover cursor-pointer transition-transform duration-300"
-                    style={{ transform: isZoomed ? `scale(${zoomLevel})` : 'scale(1)' }}
+                    className={`w-full h-96 object-cover cursor-pointer transition-transform duration-300 ${isZoomed ? 'scale-150' : 'group-hover:scale-150'}`}
+                    style={{
+                      transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`
+                    }}
                     onClick={handleImageClick}
                     onWheel={handleWheel}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={() => setMousePosition({ x: 50, y: 50 })}
                   />
-                  
-                  {/* Zoom Controls */}
-                  <div className="absolute bottom-4 right-4 flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleZoomIn();
-                      }}
-                      className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <ZoomIn size={20} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleZoomOut();
-                      }}
-                      className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <ZoomOut size={20} />
-                    </button>
-                    {isZoomed && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsZoomed(false);
-                          setZoomLevel(1);
-                        }}
-                        className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors"
-                      >
-                        <X size={20} />
-                      </button>
-                    )}
-                  </div>
                 </div>
               ) : (
                 <div className="w-full h-96 flex items-center justify-center bg-gray-50">
@@ -263,62 +225,42 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* WhatsApp Order Section */}
+            {/* Contact Section */}
             <div className="bg-white rounded-2xl shadow-card p-6 border border-gray-100">
-              <button
-                onClick={() => setShowWhatsApp(!showWhatsApp)}
-                className="w-full flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white py-4 rounded-xl font-bold uppercase tracking-wide transition-all shadow-lg"
-              >
-                <MessageCircle size={24} />
-                Order via WhatsApp
-              </button>
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Contact Us</h3>
+              
+              <div className="flex gap-3 justify-center">
+                {/* WhatsApp Button */}
+                <a
+                  href={`https://wa.me/1234567890?text=${encodeURIComponent(`Hello! I'm interested in: ${product.name}\nPrice: $${product.price}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-4 rounded-lg font-medium transition-all shadow-md hover:shadow-lg"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.M157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                  WhatsApp
+                </a>
 
-              {showWhatsApp && (
-                <div className="mt-6 space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Your Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="+1 234 567 8900"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent focus:bg-white transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Additional Message (Optional)
-                    </label>
-                    <textarea
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Any specific requirements or questions..."
-                      rows={3}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent focus:bg-white transition-all resize-none"
-                    />
-                  </div>
-
-                  <button
-                    onClick={handleWhatsAppOrder}
-                    className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-4 rounded-xl font-bold uppercase tracking-wide transition-all shadow-lg"
-                  >
-                    <MessageCircle size={24} />
-                    Send Order via WhatsApp
-                  </button>
-                </div>
-              )}
+                {/* Email Button */}
+                <a
+                  href={`mailto:info@company.com?subject=Inquiry about ${product.name}&body=Hi, I'm interested in ${product.name} (Price: $${product.price}). Please provide more information.`}
+                  className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-2.5 px-4 rounded-lg font-medium transition-all shadow-md hover:shadow-lg"
+                >
+                  <Mail size={18} />
+                  Email
+                </a>
+              </div>
             </div>
 
             {/* Wishlist Button */}
             <button
               onClick={() => setIsWishlisted(!isWishlisted)}
-              className="flex items-center gap-2 text-gray-600 hover:text-red-500 font-semibold transition-colors"
+              className="w-full flex items-center justify-center gap-2 border-2 border-gray-200 hover:border-red-300 text-gray-600 hover:text-red-500 py-3 px-4 rounded-lg font-semibold transition-all"
             >
               <Heart
-                size={24}
+                size={20}
                 className={isWishlisted ? 'fill-red-500 text-red-500' : ''}
               />
               {isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
