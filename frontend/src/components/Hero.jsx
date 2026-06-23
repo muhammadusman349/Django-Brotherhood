@@ -3,28 +3,32 @@ import { ArrowRight, Play, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Stats from './Stats';
 
-const Hero = ({ banners }) => {
+const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [heroImages, setHeroImages] = useState([]);
+  const [heroImages, setHeroImages] = useState([
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&auto=format&fit=crop'
+  ]);
 
   useEffect(() => {
-    if (banners && banners.length > 0) {
-      setHeroImages(banners.map(b => {
-        // Construct full URL if image path is relative
-        if (b.image && !b.image.startsWith('http')) {
-          return `http://localhost:8000${b.image}`;
+    const fetchBanners = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/banners/');
+        const data = await response.json();
+        if (data && data.length > 0) {
+          const bannerImages = data.map(banner => banner.image_url).filter(url => url);
+          if (bannerImages.length > 0) {
+            setHeroImages(bannerImages);
+          }
         }
-        return b.image;
-      }));
-    } else {
-      // Default hero images if no banners
-      setHeroImages([
-        'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&auto=format&fit=crop'
-      ]);
-    }
-  }, [banners]);
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      }
+    };
+
+    fetchBanners();
+  }, []);
 
   useEffect(() => {
     if (heroImages.length <= 1) return;
@@ -91,7 +95,7 @@ const Hero = ({ banners }) => {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-100 to-red-50 aspect-[4/3]">
                 <img
                   src={heroImages[currentIndex]}
-                  alt={banners?.[currentIndex]?.title || 'Athlete with sports equipment'}
+                  alt="Athlete with sports equipment"
                   className="w-full h-full object-cover transition-opacity duration-500"
                 />
                 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productsAPI } from '../services/api';
-import { ArrowLeft, Star, Heart, MessageCircle, Check, ZoomIn, ZoomOut, X } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Check, ZoomIn, ZoomOut, X } from 'lucide-react';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -222,37 +222,20 @@ const ProductDetail = () => {
               {product.name}
             </h1>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={20}
-                    className={i < 4 ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-                  />
-                ))}
-              </div>
-              <span className="text-sm text-gray-600">(4.0 rating)</span>
-            </div>
 
             {/* Price */}
             <div className="flex items-baseline gap-3">
-              <span className="text-5xl font-black text-gray-900">${product.price}</span>
+              <span className="text-3xl font-black text-gray-900">${product.price}</span>
               {product.original_price && (
-                <span className="text-2xl text-gray-400 line-through">${product.original_price}</span>
+                <span className="text-xl text-gray-400 line-through">${product.original_price}</span>
               )}
             </div>
 
-            {/* Stock Status */}
-            {product.stock !== undefined && (
+            {/* Size */}
+            {product.size && (
               <div className="flex items-center gap-2">
-                <span className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wide ${
-                  product.stock > 0 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-red-100 text-red-700'
-                }`}>
-                  {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                <span className="px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wide bg-blue-100 text-blue-700">
+                  Size: {product.size}
                 </span>
               </div>
             )}
