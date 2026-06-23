@@ -3,8 +3,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Product, Banner
+from .serializers import ProductSerializer, BannerSerializer
 from categories.models import Category
 
 
@@ -29,8 +29,14 @@ class StatsAPIView(APIView):
     def get(self, request):
         products_count = Product.objects.count()
         categories_count = Category.objects.count()
-        
+
         return Response({
             'products_count': products_count,
             'categories_count': categories_count
         })
+
+
+class BannerListView(generics.ListAPIView):
+    queryset = Banner.objects.filter(is_active=True)
+    serializer_class = BannerSerializer
+    ordering = ['position', '-created_at']

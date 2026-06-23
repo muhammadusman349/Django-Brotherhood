@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.conf import settings
-from .models import Product, ProductImage
+from .models import Product, ProductImage, Banner
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category', 'category_name', 'description', 'price', 'stock', 'feature', 'images', 'primary_image', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'category', 'category_name', 'description', 'price', 'size', 'feature', 'images', 'primary_image', 'created_at', 'updated_at']
         read_only_fields = ['created_at', 'updated_at']
 
     def get_primary_image(self, obj):
@@ -38,4 +38,21 @@ class ProductSerializer(serializers.ModelSerializer):
         first_image = obj.images.first()
         if first_image:
             return ProductImageSerializer(first_image, context=self.context).data
+        return None
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Banner
+        fields = ['id', 'title', 'image', 'image_url', 'link', 'description', 'is_active', 'position', 'created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at']
+
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return f"{settings.MEDIA_URL}{obj.image}"
         return None
