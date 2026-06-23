@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "categories",
     "products",
     "contact",
-    "banners",
 ]
 
 MIDDLEWARE = [
