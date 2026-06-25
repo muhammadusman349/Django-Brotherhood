@@ -4,14 +4,6 @@ from .models import Contact
 from .serializers import ContactSerializer
 
 
-class ContactListCreateView(generics.ListCreateAPIView):
-    queryset = Contact.objects.all()
-    serializer_class = ContactSerializer
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['name', 'email', 'subject']
-    ordering_fields = ['submitted_at']
-
-
-class ContactRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class ContactCreateView(generics.CreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
