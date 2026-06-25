@@ -1,29 +1,60 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { productsAPI, categoriesAPI } from '../services/api';
-import { Search, Filter, SlidersHorizontal, Grid, List } from 'lucide-react';
+import { Search, Filter, SlidersHorizontal, Grid, List, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 
 const Products = () => {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [sortBy, setSortBy] = useState('featured');
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState('');
+  const [sortBy, setSortBy] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+  const [hasFeaturedProducts, setHasFeaturedProducts] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
-    fetchProducts();
+    const categorySlug = searchParams.get('category_slug');
+    if (categorySlug) {
+      setSelectedCategorySlug(categorySlug);
+    }
+    fetchProducts(categorySlug);
     fetchCategories();
-  }, []);
+  }, [searchParams]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (categorySlug = null, page = 1) => {
     try {
       setLoading(true);
-      const response = await productsAPI.getAll();
-      setProducts(response.data);
+      let url = '/api/products/';
+      const params = new URLSearchParams();
+      if (categorySlug) {
+        params.append('category_slug', categorySlug);
+      }
+      params.append('page', page);
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      const response = await fetch(`http://localhost:8000${url}`);
+      const data = await response.json();
+      const products = data.results || data;
+      const count = data.count || products.length;
+      const calculatedTotalPages = Math.ceil(count / 6);
+
+      setProducts(products);
+      setHasFeaturedProducts(products.some(p => p.feature));
+      setTotalPages(calculatedTotalPages);
+      setTotalCount(count);
+      setCurrentPage(page);
       setError(null);
+
+      // Scroll to top when page changes
+      window.scrollTo(0, 0);
     } catch (err) {
       setError('Failed to fetch products');
       console.error(err);
@@ -44,8 +75,8 @@ const Products = () => {
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || product.category === parseInt(selectedCategory);
-    return matchesSearch && matchesCategory;
+    const matchesFeatured = sortBy === 'featured' ? product.feature : true;
+    return matchesSearch && matchesFeatured;
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -117,13 +148,17 @@ const Products = () => {
             <div className="flex items-center gap-2 w-full lg:w-auto">
               <Filter size={20} className="text-gray-400" />
               <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                value={selectedCategorySlug}
+                onChange={(e) => {
+                  setSelectedCategorySlug(e.target.value);
+                  setCurrentPage(1);
+                  fetchProducts(e.target.value || null, 1);
+                }}
                 className="flex-1 lg:flex-none px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent focus:bg-white transition-all"
               >
                 <option value="">All Categories</option>
                 {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
+                  <option key={cat.id} value={cat.slug}>
                     {cat.name}
                   </option>
                 ))}
@@ -138,7 +173,8 @@ const Products = () => {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="flex-1 lg:flex-none px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent focus:bg-white transition-all"
               >
-                <option value="featured">Featured</option>
+                <option value="all">All Products</option>
+                {hasFeaturedProducts && <option value="featured">Featured</option>}
                 <option value="price-low">Price: Low to High</option>
                 <option value="price-high">Price: High to Low</option>
                 <option value="name">Name: A-Z</option>
@@ -160,11 +196,56 @@ const Products = () => {
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {sortedProducts.length > 0 ? (
-          <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
-            {sortedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
+              {sortedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-12">
+                <button
+                  onClick={() => fetchProducts(selectedCategorySlug || null, currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <ChevronLeft size={20} />
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-2">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => fetchProducts(selectedCategorySlug || null, i + 1)}
+                      className={`w-10 h-10 rounded-xl font-bold transition-all ${
+                        currentPage === i + 1
+                          ? 'bg-primary-600 text-white'
+                          : 'bg-white border border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => fetchProducts(selectedCategorySlug || null, currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  Next
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            )}
+
+            <div className="text-center mt-4 text-gray-600">
+              Showing {sortedProducts.length} of {totalCount} products
+            </div>
+          </>
         ) : (
           <div className="text-center py-20">
             <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">

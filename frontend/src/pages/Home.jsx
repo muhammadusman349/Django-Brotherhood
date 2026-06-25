@@ -10,9 +10,9 @@ const Home = () => {
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/products/?feature=true');
+        const response = await fetch('http://localhost:8000/api/products/?feature=true&page_size=6');
         const data = await response.json();
-        setFeaturedProducts(data);
+        setFeaturedProducts(data.results || data);
       } catch (error) {
         console.error('Error fetching featured products:', error);
       }
@@ -21,61 +21,48 @@ const Home = () => {
     fetchFeaturedProducts();
   }, []);
 
+  // Only show featured products section if there are actual featured products
+  const showFeaturedSection = featuredProducts.length > 0;
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <Hero />
 
-      {/* Featured Products Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">
-              <Star size={16} />
-              <span>Top Picks</span>
+      {/* Featured Products Section - Only show if feature=true products exist */}
+      {showFeaturedSection && (
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-4">
+                <Star size={16} />
+                <span>Top Picks</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
+                Featured Products
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Premium equipment chosen by athletes worldwide for performance and durability
+              </p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
-              Featured Products
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Premium equipment chosen by athletes worldwide for performance and durability
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.length > 0 ? (
-              featuredProducts.map((product) => (
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
-              ))
-            ) : (
-              // Placeholder products when API is not available
-              [1, 2, 3, 4].map((i) => (
-                <ProductCard 
-                  key={i} 
-                  product={{
-                    id: i,
-                    name: `Premium Sports Equipment ${i}`,
-                    price: (99 + i * 25).toFixed(2),
-                    description: 'Professional-grade sports equipment designed for athletes who demand the best.',
-                    category_name: 'Sports Gear',
-                    stock: 10,
-                    image: `https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&auto=format&fit=crop`
-                  }}
-                />
-              ))
-            )}
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link
+                to="/products"
+                className="inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold text-lg uppercase tracking-wide hover:bg-gray-800 transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl"
+              >
+                View All Products <ArrowRight size={24} />
+              </Link>
+            </div>
           </div>
-          
-          <div className="text-center mt-12">
-            <Link
-              to="/products"
-              className="inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold text-lg uppercase tracking-wide hover:bg-gray-800 transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl"
-            >
-              View All Products <ArrowRight size={24} />
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Stats Banner */}
       <section className="bg-gradient-to-r from-blue-900 to-gray-900 text-white py-20">

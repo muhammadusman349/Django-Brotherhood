@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { productsAPI } from '../services/api';
 import { ArrowLeft, Heart, Check, Mail } from 'lucide-react';
+import ProductCard from '../components/ProductCard';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -13,10 +14,17 @@ const ProductDetail = () => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    if (product?.category) {
+      fetchRelatedProducts(product.category);
+    }
+  }, [product]);
 
   const fetchProduct = async () => {
     try {
@@ -29,6 +37,17 @@ const ProductDetail = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchRelatedProducts = async (categoryId) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/products/?category=${categoryId}&page_size=4`);
+      const data = await response.json();
+      const products = data.results || data;
+      setRelatedProducts(products.filter(p => p.id !== parseInt(id)));
+    } catch (err) {
+      console.error('Failed to fetch related products:', err);
     }
   };
 
@@ -122,7 +141,7 @@ const ProductDetail = () => {
                   <img
                     src={currentImage.image_url}
                     alt={currentImage.alt_text || product.name}
-                    className={`w-full h-96 object-cover cursor-pointer transition-transform duration-300 ${isZoomed ? 'scale-150' : 'group-hover:scale-150'}`}
+                    className={`w-full h-[500px] object-contain cursor-pointer transition-transform duration-300 ${isZoomed ? 'scale-150' : 'group-hover:scale-150'}`}
                     style={{
                       transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`
                     }}
@@ -133,7 +152,7 @@ const ProductDetail = () => {
                   />
                 </div>
               ) : (
-                <div className="w-full h-96 flex items-center justify-center bg-gray-50">
+                <div className="w-full h-[500px] flex items-center justify-center bg-gray-50">
                   <div className="text-center">
                     <div className="bg-gray-200 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
                       <span className="text-4xl">📦</span>
@@ -146,7 +165,7 @@ const ProductDetail = () => {
 
             {/* Thumbnail Gallery */}
             {currentImages.length > 1 && (
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-4 gap-3">
                 {currentImages.map((img, index) => (
                   <button
                     key={img.id}
@@ -155,14 +174,14 @@ const ProductDetail = () => {
                       setIsZoomed(false);
                       setZoomLevel(1);
                     }}
-                    className={`rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
                       selectedImage === index ? 'border-primary-500' : 'border-transparent'
                     }`}
                   >
                     <img
                       src={img.image_url}
                       alt={img.alt_text || product.name}
-                      className="w-full h-20 object-cover"
+                      className="w-full h-full object-contain p-1"
                     />
                   </button>
                 ))}
@@ -268,6 +287,20 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-black text-gray-900 mb-8 tracking-tight">Related Products</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedProducts.map((relatedProduct) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

@@ -60,20 +60,6 @@ const ProductCard = ({ product }) => {
           {product.name}
         </h3>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1 mb-3">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                size={16}
-                className={i < 4 ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-              />
-            ))}
-          </div>
-          <span className="text-sm text-gray-500 ml-1">(4.0)</span>
-        </div>
-
         {/* Description */}
         {product.description && (
           <p className="text-sm text-gray-600 mb-4 line-clamp-2">
