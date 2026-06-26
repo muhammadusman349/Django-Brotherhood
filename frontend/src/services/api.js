@@ -34,4 +34,13 @@ export const contactAPI = {
   delete: (id) => api.delete(`/contact/${id}/`),
 };
 
+// Shipment API
+export const shipmentAPI = {
+  getAll: () => api.get('/shipments/'),
+  getById: (id) => api.get(`/shipments/${id}/`),
+  create: (data) => api.post('/shipments/', data),
+  update: (id, data) => api.put(`/shipments/${id}/`, data),
+  delete: (id) => api.delete(`/shipments/${id}/`),
+};
+
 export default api;

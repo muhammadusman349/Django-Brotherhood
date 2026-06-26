@@ -8,6 +8,9 @@ import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Categories from './pages/Categories'
 import Contact from './pages/Contact'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
+import ShippingInfo from './pages/ShippingInfo'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -32,6 +35,9 @@ function App() {
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/shipping-info" element={<ShippingInfo />} />
           </Routes>
         </main>
         <Footer />
