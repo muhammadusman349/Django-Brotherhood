@@ -137,9 +137,9 @@ const Footer = () => {
               &copy; {new Date().getFullYear()} Brother Sports. All rights reserved.
             </p>
             <div className="flex gap-8 text-sm">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors font-semibold">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors font-semibold">Terms of Service</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors font-semibold">Shipping Info</a>
+              <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors font-semibold">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="text-gray-400 hover:text-white transition-colors font-semibold">Terms of Service</Link>
+              <Link to="/shipping-info" className="text-gray-400 hover:text-white transition-colors font-semibold">Shipping Info</Link>
             </div>
           </div>
         </div>
