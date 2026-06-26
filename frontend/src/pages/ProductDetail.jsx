@@ -16,6 +16,15 @@ const ProductDetail = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [relatedProducts, setRelatedProducts] = useState([]);
 
+  // Update document title when product loads
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.name} | Brother Sports`;
+    } else {
+      document.title = 'Product Details | Brother Sports';
+    }
+  }, [product]);
+
   useEffect(() => {
     fetchProduct();
   }, [id]);

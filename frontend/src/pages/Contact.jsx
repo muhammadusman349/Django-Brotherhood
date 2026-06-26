@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { contactAPI } from '../services/api';
 import { Send, Mail, Phone, MapPin, CheckCircle } from 'lucide-react';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Contact = () => {
+  useDocumentTitle('Contact');
   const [formData, setFormData] = useState({
     name: '',
     email: '',

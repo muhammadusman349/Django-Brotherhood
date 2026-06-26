@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { categoriesAPI } from '../services/api';
 import { Package } from 'lucide-react';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Categories = () => {
+  useDocumentTitle('Categories');
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

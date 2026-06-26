@@ -3,8 +3,10 @@ import { useSearchParams } from 'react-router-dom';
 import { productsAPI, categoriesAPI } from '../services/api';
 import { Search, Filter, SlidersHorizontal, Grid, List, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Products = () => {
+  useDocumentTitle('Products');
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);

@@ -3,8 +3,10 @@ import { ArrowRight, Award, TrendingUp, Truck, Shield, Zap, Mail, Star } from 'l
 import { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const Home = () => {
+  useDocumentTitle('Home');
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
   useEffect(() => {
