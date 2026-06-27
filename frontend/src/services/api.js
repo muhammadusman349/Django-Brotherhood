@@ -27,6 +27,13 @@ export const productsAPI = {
   delete: (id) => api.delete(`/products/${id}/`),
 };
 
+// Catalogs API
+export const catalogsAPI = {
+  getAll: (params) => api.get('/catalogs/', { params }),
+  getById: (id) => api.get(`/catalogs/${id}/`),
+  download: (id, password) => api.post(`/catalogs/${id}/download/`, { password }, { responseType: 'blob' }),
+};
+
 // Contact API
 export const contactAPI = {
   getAll: () => api.get('/contact/'),

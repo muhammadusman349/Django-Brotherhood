@@ -65,6 +65,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/catalogs" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
+                  <span className="text-primary-500">›</span> Catalogs
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
                   <span className="text-primary-500">›</span> Contact
                 </Link>
