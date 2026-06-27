@@ -49,3 +49,34 @@ class Banner(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Catalog(models.Model):
+    CATEGORY_CHOICES = [
+        ('football', 'Football'),
+        ('gloves', 'Gloves'),
+        ('hosiery', 'Hosiery'),
+    ]
+
+    title = models.CharField(max_length=200)
+    cover_image = models.ImageField(upload_to='catalog/covers/')
+    catalog_file = models.FileField(upload_to='catalog/pdfs/')
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    year = models.PositiveIntegerField()
+    download_count = models.PositiveIntegerField(default=0)
+
+    # password for protected access
+    password = models.CharField(max_length=100, blank=True)
+
+    upload_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-year', '-upload_date']
+
+    def __str__(self):
+        return f"{self.title} ({self.year})"
+
+    def increase_download(self):
+        self.download_count += 1
+        self.save(update_fields=['download_count'])

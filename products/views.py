@@ -3,10 +3,12 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
-from .models import Product, Banner
-from .serializers import ProductSerializer, BannerSerializer
+from django.http import FileResponse, Http404
+from .models import Product, Banner, Catalog
+from .serializers import ProductSerializer, BannerSerializer, CatalogSerializer
 from .filters import ProductFilter
 from categories.models import Category
 
@@ -61,3 +63,60 @@ class BannerListView(generics.ListAPIView):
     queryset = Banner.objects.filter(is_active=True)
     serializer_class = BannerSerializer
     ordering = ['position', '-created_at']
+
+
+class CatalogView(generics.GenericAPIView):
+    queryset = Catalog.objects.all()
+    serializer_class = CatalogSerializer
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['category', 'year']
+    search_fields = ['title']
+    ordering_fields = ['year', 'title', 'upload_date', 'download_count']
+
+    def get(self, request, id=None):
+        if id:
+            catalog = get_object_or_404(self.get_queryset(), id=id)
+            serializer = self.get_serializer(catalog)
+            return Response(serializer.data)
+
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class CatalogDownloadView(APIView):
+    def post(self, request, id):
+        catalog = get_object_or_404(Catalog, id=id)
+        
+        # Check password if required
+        if catalog.password:
+            provided_password = request.data.get('password')
+            if not provided_password or provided_password != catalog.password:
+                return Response(
+                    {'error': 'Invalid or missing password'}, 
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        
+        # Check if file exists
+        if not catalog.catalog_file:
+            return Response(
+                {'error': 'No file available for download'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Increment download count
+        catalog.increase_download()
+        
+        # Return file response
+        try:
+            return FileResponse(
+                catalog.catalog_file.open('rb'),
+                as_attachment=True,
+                filename=catalog.catalog_file.name.split('/')[-1]
+            )
+        except Exception as e:
+            return Response(
+                {'error': 'Error downloading file'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

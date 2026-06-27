@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductImage, Banner
+from .models import Product, ProductImage, Banner, Catalog
 
 
 class ProductImageInline(admin.TabularInline):
@@ -31,3 +31,12 @@ class BannerAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description']
     list_editable = ['is_active', 'position']
     readonly_fields = ['created_at', 'updated_at']
+
+
+@admin.register(Catalog)
+class CatalogAdmin(admin.ModelAdmin):
+    list_display = ['title', 'category', 'year', 'download_count', 'upload_date', 'update_date']
+    list_filter = ['category', 'year', 'upload_date']
+    search_fields = ['title']
+    readonly_fields = ['download_count', 'upload_date', 'update_date']
+    list_editable = ['year']

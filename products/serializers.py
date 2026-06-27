@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.conf import settings
-from .models import Product, ProductImage, Banner
+from .models import Product, ProductImage, Banner, Catalog
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -55,4 +55,38 @@ class BannerSerializer(serializers.ModelSerializer):
             if request:
                 return request.build_absolute_uri(obj.image.url)
             return f"{settings.MEDIA_URL}{obj.image}"
+        return None
+
+
+class CatalogSerializer(serializers.ModelSerializer):
+    cover_image_url = serializers.SerializerMethodField()
+    catalog_file_url = serializers.SerializerMethodField()
+    category_display = serializers.CharField(source='get_category_display', read_only=True)
+    is_protected = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Catalog
+        fields = ['id', 'title', 'cover_image', 'cover_image_url', 'catalog_file', 'catalog_file_url', 'category', 'category_display', 'year', 'download_count', 'is_protected', 'upload_date', 'update_date']
+        read_only_fields = ['download_count', 'upload_date', 'update_date']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def get_is_protected(self, obj):
+        return bool(obj.password)
+
+    def get_cover_image_url(self, obj):
+        if obj.cover_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.cover_image.url)
+            return f"{settings.MEDIA_URL}{obj.cover_image.url}"
+        return None
+
+    def get_catalog_file_url(self, obj):
+        if obj.catalog_file:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.catalog_file.url)
+            return f"{settings.MEDIA_URL}{obj.catalog_file.url}"
         return None
