@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contact, PrivacyPolicy, TermsOfService, Shipment
+from .models import Contact, Shipment
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
@@ -14,18 +14,6 @@ class ContactAdmin(admin.ModelAdmin):
             from django.utils import timezone
             obj.replied_at = timezone.now()
         super().save_model(request, obj, form, change)
-
-
-@admin.register(PrivacyPolicy)
-class PrivacyPolicyAdmin(admin.ModelAdmin):
-    list_display = ['title', 'last_updated']
-    search_fields = ['title']
-
-
-@admin.register(TermsOfService)
-class TermsOfServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'last_updated']
-    search_fields = ['title']
 
 
 @admin.register(Shipment)

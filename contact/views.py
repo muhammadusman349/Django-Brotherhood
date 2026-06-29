@@ -2,8 +2,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.utils import timezone
-from .models import Contact, PrivacyPolicy, TermsOfService, Shipment
-from .serializers import ContactSerializer, PrivacyPolicySerializer, TermsOfServiceSerializer, ShipmentSerializer
+from .models import Contact, Shipment
+from .serializers import ContactSerializer, ShipmentSerializer
 
 
 class ContactCreateView(generics.CreateAPIView):
@@ -36,26 +36,6 @@ class ContactDetailView(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
         
         return Response(serializer.data)
-
-
-class PrivacyPolicyListView(generics.ListAPIView):
-    queryset = PrivacyPolicy.objects.all()
-    serializer_class = PrivacyPolicySerializer
-
-
-class PrivacyPolicyDetailView(generics.RetrieveAPIView):
-    queryset = PrivacyPolicy.objects.all()
-    serializer_class = PrivacyPolicySerializer
-
-
-class TermsOfServiceListView(generics.ListAPIView):
-    queryset = TermsOfService.objects.all()
-    serializer_class = TermsOfServiceSerializer
-
-
-class TermsOfServiceDetailView(generics.RetrieveAPIView):
-    queryset = TermsOfService.objects.all()
-    serializer_class = TermsOfServiceSerializer
 
 
 class ShipmentListView(generics.ListAPIView):
