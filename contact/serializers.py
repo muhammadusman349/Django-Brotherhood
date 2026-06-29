@@ -6,8 +6,8 @@ from .models import Contact, PrivacyPolicy, TermsOfService, Shipment
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields = ['id', 'name', 'email', 'subject', 'message', 'submitted_at']
-        read_only_fields = ['submitted_at']
+        fields = ['id', 'name', 'email', 'subject', 'message', 'reply', 'is_replied', 'replied_at', 'submitted_at']
+        read_only_fields = ['submitted_at', 'replied_at']
 
 
 class PrivacyPolicySerializer(serializers.ModelSerializer):

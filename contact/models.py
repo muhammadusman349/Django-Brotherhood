@@ -6,6 +6,9 @@ class Contact(models.Model):
     email = models.EmailField()
     subject = models.CharField(max_length=200)
     message = models.TextField()
+    reply = models.TextField(blank=True, null=True)
+    is_replied = models.BooleanField(default=False)
+    replied_at = models.DateTimeField(blank=True, null=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
