@@ -181,3 +181,12 @@ npm run dev
 ## License
 
 This project is for educational purposes.
+
+
+i have idea for i work in factory football manufaturing factory where i work as counting the footballs phase one is Matcing where one person match the printing pieces 1st sorting then 2nd sorting 
+second phase is go these match piecs for stitiching  i count stitch footballs for example Shahid is the incharge od stitching under shahid there boys work with and stitch balls 
+football article name 
+stitcher name : total ball stitch 
+
+third phase is final knot where the one person incharge under this person people work for exp
+in final knot the person stitch with hand of football short piece 
