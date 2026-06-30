@@ -1,7 +1,9 @@
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Trophy, Zap, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -13,12 +15,12 @@ const Footer = () => {
                 <span className="text-2xl font-black text-white">BS</span>
               </div>
               <div>
-                <h3 className="text-2xl font-black tracking-tight uppercase">Brother Sports</h3>
-                <div className="text-xs text-gray-400 font-semibold tracking-widest">PREMIUM EQUIPMENT</div>
+                <h3 className="text-2xl font-black tracking-tight uppercase">{t('company.name')}</h3>
+                <div className="text-xs text-gray-400 font-semibold tracking-widest">{t('company.tagline')}</div>
               </div>
             </div>
             <p className="text-gray-400 mb-8 text-lg leading-relaxed">
-              Premium sports products designed for performance, quality, and champions worldwide.
+              {t('footer.companyInfo')}
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
@@ -46,32 +48,32 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-black mb-6 uppercase tracking-wider flex items-center gap-2">
               <Zap size={20} className="text-secondary-400" />
-              Quick Links
+              {t('footer.quickLinks')}
             </h4>
             <ul className="space-y-4">
               <li>
                 <Link to="/" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
-                  <span className="text-primary-500">›</span> Home
+                  <span className="text-primary-500">›</span> {t('nav.home')}
                 </Link>
               </li>
               <li>
                 <Link to="/products" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
-                  <span className="text-primary-500">›</span> Products
+                  <span className="text-primary-500">›</span> {t('nav.products')}
                 </Link>
               </li>
               <li>
                 <Link to="/categories" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
-                  <span className="text-primary-500">›</span> Categories
+                  <span className="text-primary-500">›</span> {t('nav.categories')}
                 </Link>
               </li>
               <li>
                 <Link to="/catalogs" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
-                  <span className="text-primary-500">›</span> Catalogs
+                  <span className="text-primary-500">›</span> {t('nav.catalog')}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-gray-400 hover:text-white hover:translate-x-2 transition-all inline-flex items-center gap-2 font-semibold">
-                  <span className="text-primary-500">›</span> Contact
+                  <span className="text-primary-500">›</span> {t('nav.contact')}
                 </Link>
               </li>
             </ul>
@@ -81,7 +83,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-black mb-6 uppercase tracking-wider flex items-center gap-2">
               <Trophy size={20} className="text-secondary-400" />
-              Follow Us
+              {t('footer.followUs')}
             </h4>
             <div className="flex gap-3 flex-wrap mb-8">
               <a
@@ -123,13 +125,13 @@ const Footer = () => {
             </div>
             <div className="p-5 bg-gradient-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl border border-primary-500/30">
               <p className="text-sm font-semibold text-gray-300 mb-3">
-                🏆 Join 50,000+ athletes
+                {t('footer.joinAthletes')}
               </p>
               <Link
                 to="/products"
                 className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold text-sm transition-colors"
               >
-                Start Shopping <ArrowRight size={16} />
+                {t('footer.startShopping')} <ArrowRight size={16} />
               </Link>
             </div>
           </div>
@@ -139,12 +141,12 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-16 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-gray-400 text-center md:text-left">
-              &copy; {new Date().getFullYear()} Brother Sports. All rights reserved.
+              &copy; {new Date().getFullYear()} Brother Sports. {t('footer.copyright')}
             </p>
             <div className="flex gap-8 text-sm">
-              <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors font-semibold">Privacy Policy</Link>
-              <Link to="/terms-of-service" className="text-gray-400 hover:text-white transition-colors font-semibold">Terms of Service</Link>
-              <Link to="/shipping-info" className="text-gray-400 hover:text-white transition-colors font-semibold">Shipping Info</Link>
+              <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors font-semibold">{t('footer.privacyPolicy')}</Link>
+              <Link to="/terms-of-service" className="text-gray-400 hover:text-white transition-colors font-semibold">{t('footer.termsOfService')}</Link>
+              <Link to="/shipping-info" className="text-gray-400 hover:text-white transition-colors font-semibold">{t('footer.shippingInfo')}</Link>
             </div>
           </div>
         </div>

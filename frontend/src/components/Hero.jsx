@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Stats from './Stats';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [heroImages, setHeroImages] = useState([
     'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop',
@@ -59,18 +61,18 @@ const Hero = () => {
           <div className="space-y-8 animate-fadeInUp">
             <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider">
               <Sparkles size={16} />
-              <span>Premium Sports Equipment</span>
+              <span>{t('hero.badge')}</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
-              Crafting Excellence 
+              {t('hero.title')} 
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-red-600">
-                In Every Game
+                {t('hero.titleHighlight')}
               </span>
             </h1>
 
             <p className="text-xl text-gray-600 leading-relaxed max-w-xl">
-              High-performance footballs, goalkeeper gloves, and sportswear crafted to deliver durability, precision, and professional quality worldwide.
+              {t('hero.subtitle')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -78,7 +80,7 @@ const Hero = () => {
                 to="/products"
                 className="group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-blue-700 to-red-600 text-white px-8 py-4 rounded-2xl font-bold text-lg uppercase tracking-wide hover:from-blue-800 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
               >
-                Shop Now
+                {t('hero.shopNow')}
                 <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               
@@ -127,7 +129,7 @@ const Hero = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">Sports Show</div>
+                    <div className="font-bold text-gray-900">{t('hero.sportsShow')}</div>
                     <div className="text-sm text-gray-500"></div>
                   </div>
                 </div>
@@ -142,7 +144,7 @@ const Hero = () => {
                     </svg>
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">Quality Guaranteed</div>
+                    <div className="font-bold text-gray-900">{t('hero.qualityGuaranteed')}</div>
                     <div className="text-sm text-gray-500"></div>
                   </div>
                 </div>
